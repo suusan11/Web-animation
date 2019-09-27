@@ -14,7 +14,8 @@
 		$birdHat = $bird.find('#BirdHat'),
 		$birdEyes = $bird.find('#leftEye, #rightEye'),
 		$nest = $('#NestAndLeaves'),
-		$tree = $('#tree_trunk');
+		$tree = $('#tree_trunk'),
+		$cardContainer = $('.card.container');
 
 	// clear stage
 	function clearStage() {
@@ -29,7 +30,13 @@
 			.set($bird, { y: '+=65', autoAlpha: 0 })
 			.set($nest, { autoAlpha: 0 })
 			.set($tree, { autoAlpha: 0 })
-			.set($flooLeaves, { y: '+=275', autoAlpha: 0 })
+			.set($flooLeaves, { y: '+=275', onComplete: showContainer });
+
+
+		function showContainer() {
+			$cardContainer.css('display', 'block');
+		}
+
 		return clearTl;
 	}
 	// enter floor vegetation
