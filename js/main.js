@@ -73,8 +73,17 @@
 			.to($bird, 0.8, { y: '-=34', ease: Power4.easeInOut })
 			.to($bird, 0.3, { y: '+=8', ease: Power4.easeInOut })
 			.to($birdHat, 0.4, { y: '-=12' }, '-=0.6')
-			.to($birdHat, 0.3, { y: 0, rotation: 0, x: 0 })
+			.to($birdHat, 0.3, { y: 0, rotation: 0, x: 0, onComplete: startBlinking }, '-=0.2')
 
+		function startBlinking() {
+			var birdBlinksTl = new TimelineMax({ repeat: -1, repeatDelay: 5 });
+
+			birdBlinksTl
+				.set($birdEyes, { autoAlpha: 0 })
+				.set($birdEyes, { autoAlpha: 1 }, '+=0.2')
+				.set($birdEyes, { autoAlpha: 0 }, '+=1.2')
+				.set($birdEyes, { autoAlpha: 1 }, '+=0.2')
+		}
 		return treeStuffTl;
 	}
 	// enter the greeting text
