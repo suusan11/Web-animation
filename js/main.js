@@ -15,7 +15,8 @@
 		$birdEyes = $bird.find('#leftEye, #rightEye'),
 		$nest = $('#NestAndLeaves'),
 		$tree = $('#tree_trunk'),
-		$cardContainer = $('.card.container');
+		$cardContainer = $('.card.container'),
+		$body = $('body');
 
 	// clear stage
 	function clearStage() {
@@ -91,9 +92,36 @@
 		var greetingTl = new TimelineMax();
 
 		greetingTl
-			.fromTo($textLine1, 1, { y: '-=50', autoAlpha: 0 }, { y: 0, autoAlpha: 1 })
+			.fromTo($textLine1, 1, { y: '-=50', autoAlpha: 0 }, { y: 0, autoAlpha: 1, onComplete: startLoops })
 			.fromTo($textLine2, 1, { y: '-=25', autoAlpha: 0 }, { y: 0, autoAlpha: 1 })
 			.staggerFromTo($textGreeting, 0.5, { scale: 2, autoAlpha: 0, transformOrigin: 'center center' }, { scale: 1, autoAlpha: 1, transformOrigin: 'center center' }, 0.1)
+
+		function startLoops() {
+			//start background color loop
+			var colors = ['#edcc93', '#f7e3ce', '#f3ebcc', '#edcc93'];
+			var bgTl = new TimelineMax({ repeat: -1, repeatDelay: 2 });
+
+			bgTl
+				.to($body, 3, { backgroundColor: colors[0] })
+				.to($body, 3, { backgroundColor: colors[1] }, '+=2')
+				.to($body, 3, { backgroundColor: colors[2] }, '+=2')
+				.to($body, 3, { backgroundColor: colors[3] }, '+=2');
+
+			//start falling leaves
+			TweenMax.set($backFallingLeaves, { y: '-100', autoAlpha: 0.2 });
+			TweenMax.to('#brownLeaf', 10 + Math.random() * 10, { y: '+=1200', autoAlpha: 1, onComplete: repeatFall, onCompleteParams: ['#brownLeaf'], ease: Linear.easeNone });
+			TweenMax.to('#redLeaf', 10 + Math.random() * 10, { y: '+=1200', autoAlpha: 1, onComplete: repeatFall, onCompleteParams: ['#redLeaf'], ease: Linear.easeNone });
+			TweenMax.to('#orangeLeaf', 10 + Math.random() * 10, { y: '+=1200', autoAlpha: 1, onComplete: repeatFall, onCompleteParams: ['#orangeLeaf'], ease: Linear.easeNone });
+
+			function repeatFall(leafId) {
+				var range = Math.random() * 800,
+					offset = 400,
+					newXPosition = range - offset;
+
+				TweenMax.set(leafId, { x: newXPosition, y: -100, autoAlpha: 0.2, rotation: Math.random() * 360 });
+				TweenMax.to(leafId, 10 + Math.random() * 10, { y: '+=1200', autoAlpha: 1, onComplete: repeatFall, onCompleteParams: [leafId], ease: Linear.easeNone });
+			}
+		}
 		return greetingTl;
 	}
 	// the GO function ...to kick things all off
