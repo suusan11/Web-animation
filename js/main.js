@@ -87,7 +87,15 @@
 		return treeStuffTl;
 	}
 	// enter the greeting text
+	function enterGreeting() {
+		var greetingTl = new TimelineMax();
 
+		greetingTl
+			.fromTo($textLine1, 1, { y: '-=50', autoAlpha: 0 }, { y: 0, autoAlpha: 1 })
+			.fromTo($textLine2, 1, { y: '-=25', autoAlpha: 0 }, { y: 0, autoAlpha: 1 })
+			.staggerFromTo($textGreeting, 0.5, { scale: 2, autoAlpha: 0, transformOrigin: 'center center' }, { scale: 1, autoAlpha: 1, transformOrigin: 'center center' }, 0.1)
+		return greetingTl;
+	}
 	// the GO function ...to kick things all off
 	function go() {
 		var masterTl = new TimelineMax();
@@ -96,6 +104,7 @@
 			.add(clearStage(), 'scene-clear-stage')
 			.add(enterFloorVegetation(), 'scene-floor-vegetation')
 			.add(enterTreestuff(), 'scene-enter-treestuff')
+			.add(enterGreeting, 'scene-greeting')
 	}
 
 	go();
